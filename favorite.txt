@@ -1,0 +1,4 @@
+SELECT itemsview.* , 1 as favorite FROM itemsview 
+INNER JOIN favorite ON favorite.items_id = itemsview.item_id AND favorite.users_id = 19 
+UNION ALL 
+SELECT * , 0 as favorite FROM itemsview WHERE item_id != (SELECT itemsview.item_id FROM itemsview INNER JOIN favorite ON favorite.items_id = itemsview.item_id AND favorite.users_id = 19);

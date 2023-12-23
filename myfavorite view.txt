@@ -1,0 +1,47 @@
+CREATE OR REPLACE VIEW myfavorite AS
+SELECT favorite.id as favorite_id ,favorite.users_id as favorite_users_id ,favorite.items_id as favorite_items_id,favorite.created_at as favorite_created_at ,favorite.updated_at as favorite_updated_at, items.*, users.id as users_id
+FROM favorite
+INNER JOIN users ON users.id = favorite.users_id
+INNER JOIN items ON items.id = favorite.items_id;
+
+CREATE OR REPLACE VIEW cartview AS 
+SELECT 
+	SUM(items.price) AS itemsprice,
+    COUNT(cart.items_id) AS countitems,
+    cart.id AS cart_id,
+    cart.users_id AS cart_users_id,
+    cart.items_id AS cart_items_id,
+    cart.created_at AS cart_created_at,
+    cart.updated_at AS cart_updated_at,
+    items.* 
+FROM 
+    cart
+JOIN 
+    items ON cart.items_id = items.id
+GROUP BY 
+  cart.users_id, cart.items_id
+
+
+CREATE OR REPLACE VIEW itemsview AS
+SELECT 
+    items.id AS item_id, 
+    items.name AS itemName, 
+    items.name_ar AS itemNameAr, 
+    items.description AS itemDescription, 
+    items.description_ar AS itemDescriptionAr, 
+    items.image AS itemImage, 
+    items.count AS itemCount, 
+    items.active AS itemActive, 
+    items.price AS itemPrice, 
+    items.discount AS itemDiscount, 
+    items.category_id AS itemCategoryId, 
+    items.created_at AS itemCreatedAt, 
+    items.updated_at AS itemUpdatedAt, 
+    categories.id AS categoryId, 
+    categories.name AS categoryName, 
+    categories.name_ar AS categoryNameAr, 
+    categories.image AS categoryImage, 
+    categories.created_at AS categoryCreatedAt, 
+    categories.updated_at AS categoryUpdatedAt
+FROM items 
+INNER JOIN categories ON categories.id = items.category_id;
